@@ -1,1 +1,120 @@
+## **切片Slice**
 
+通过`make()`函数创建切片
+
+```go
+// 创建一个整型切片
+// 其长度为 3 个元素，容量为 5 个元素
+slice := make([]int, 3, 5)
+```
+
+切片是一个集合，可以迭代其中的元素，用`for range`**遍历**切片
+
+```go
+myNum := []int{10, 20, 30, 40, 50}
+// 迭代每一个元素，并显示其值
+for index, value := range myNum {
+    fmt.Printf("index: %d value: %d\n", index, value)
+}
+```
+
+使用`append()`函数为切片**添加**元素
+
+```go
+var car [ ] string
+car = append（car,"hello"）//单个添加
+car = append（car,"world","and","go","!"）//多个添加
+```
+
+切片间的`copy()`**拷贝**操作
+
+```go\
+num1 := []int{10, 20, 30}
+num2 := make([]int, 5)
+count := copy(num2, num1)
+fmt.Println(count)
+fmt.Println(num2)
+```
+
+## **映射Map**
+
+map类型的变量默认初始值为nil，需要使用`make()`函数来分配内存
+
+```go
+scoreMap := make(map[string]int, 8)
+	scoreMap["张三"] = 90
+	scoreMap["小明"] = 100
+	fmt.Println(scoreMap)
+	fmt.Println(scoreMap["小明"])
+	fmt.Printf("type of a:%T\n", scoreMap)
+```
+
+判断map中键**是否存在**
+
+```go
+scoreMap := make(map[string]int)
+scoreMap["张三"] = 90
+scoreMap["小明"] = 100
+// 如果key存在ok为true,v为对应的值；不存在ok为false,v为值类型的零值
+v, ok := scoreMap["张三"]
+if ok {
+	fmt.Println(v)
+} else {
+	fmt.Println("查无此人")
+}
+```
+
+Go语言中使用`for range`遍历map,可以只保留value
+
+```go
+scoreMap := make(map[string]int)
+scoreMap["张三"] = 90
+scoreMap["小明"] = 100
+scoreMap["李四"] = 60
+for k, v := range scoreMap {
+	fmt.Println(k, v)
+}
+```
+
+使用`delete()`内建函数从map中删除一组键值对
+
+```go
+scoreMap := make(map[string]int)
+scoreMap["张三"] = 90
+scoreMap["小明"] = 100
+scoreMap["李四"] = 60
+delete(scoreMap, "小明")//将小明:100从map中删除
+for k,v := range scoreMap{
+	fmt.Println(k, v)
+}
+```
+
+
+
+
+
+## **函数Function**
+
+
+
+## **指针Pointer**
+
+
+
+## **结构体Structure**
+
+
+
+## **包Package**
+
+
+
+## **接口Interface**
+
+
+
+## **反射Reflect**
+
+
+
+## **并发Concurrent**
