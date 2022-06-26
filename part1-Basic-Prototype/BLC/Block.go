@@ -1,6 +1,9 @@
 package BLC
 
 import (
+	"bytes"
+	"crypto/sha256"
+	"strconv"
 	"time"
 )
 
@@ -17,6 +20,23 @@ type Block struct {
 	Hash []byte
 }
 
+// set hash
+func (block *Block) SetHash() {
+	// 1. height to byte
+	heightBytes := Int64ToByte(block.Height)
+	// 2. timestamp to byte
+	timestampString := strconv.FormatInt(block.Timestamp, 2)
+	timestampBytes := []byte(timestampString)
+	// 3. sum all member
+	blockBytes := bytes.Join(
+		[][]byte{heightBytes, block.PrevBlockHash, block.Data, timestampBytes},
+		[]byte{},
+	)
+	// 4. get the hash
+	hash := sha256.Sum256(blockBytes)
+	block.Hash = hash[:]
+}
+
 // create new block
 func NewBlock(data string, height int64, prevBlockHash []byte) *Block {
 	block := &Block{
@@ -26,5 +46,6 @@ func NewBlock(data string, height int64, prevBlockHash []byte) *Block {
 		Timestamp:     time.Now().Unix(),
 		Hash:          nil,
 	}
+	block.SetHash()
 	return block
 }

@@ -8,7 +8,7 @@ import (
 
 func main() {
 	block := BLC.NewBlock(
-		"the first block",
+		"genenis block",
 		1,
 		[]byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	)
