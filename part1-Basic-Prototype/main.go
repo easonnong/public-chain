@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 
-	"github.com/easonnong/snowcash/part1-Basic-Prototype/BLC"
+	"github.com/easonnong/public-chain/part1-Basic-Prototype/BLC"
 )
 
 func main() {
 	block := BLC.NewBlock(
-		"genenis block",
+		"genesis block",
 		1,
 		[]byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	)
