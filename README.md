@@ -1,1 +1,1 @@
-# Learning-Note
+# public chain
