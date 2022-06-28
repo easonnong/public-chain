@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/easonnong/public-chain/part15-persistence/BLC"
+	"github.com/easonnong/public-chain/part16-persistence-addBlock/BLC"
 )
 
 func main() {
