@@ -31,30 +31,33 @@ func CreateBlockchainWithGenesisBlock() *BlockChain {
 
 	// updata blockchain
 	err = db.Update(func(tx *bolt.Tx) error {
-		// create table
-		bucket, err := tx.CreateBucket([]byte(blockTableName))
+
+		bucket := tx.Bucket([]byte(blockTableName))
+
+		if bucket == nil {
+			// 1.create table
+			bucket, err = tx.CreateBucket([]byte(blockTableName))
+			if err != nil {
+				log.Panic(err)
+			}
+		}
+
+		// 2.create genesis block
+		genesisBlock := CreateGenesisBlock("genesis block")
+
+		// 3.store genesis block to table
+		err := bucket.Put(genesisBlock.Hash, genesisBlock.SerializeBlock())
 		if err != nil {
 			log.Panic(err)
 		}
 
-		if bucket == nil {
-			// create genesis block
-			genesisBlock := CreateGenesisBlock("genesis block")
-
-			//store genesis block to table
-			err := bucket.Put(genesisBlock.Hash, genesisBlock.SerializeBlock())
-			if err != nil {
-				log.Panic(err)
-			}
-
-			//store latest block hash
-			err = bucket.Put([]byte("l"), genesisBlock.Hash)
-			if err != nil {
-				log.Panic(err)
-			}
-
-			blockHash = genesisBlock.Hash
+		// 4.store latest block hash
+		err = bucket.Put([]byte("l"), genesisBlock.Hash)
+		if err != nil {
+			log.Panic(err)
 		}
+
+		blockHash = genesisBlock.Hash
 
 		return nil
 	})
@@ -70,7 +73,39 @@ func CreateBlockchainWithGenesisBlock() *BlockChain {
 }
 
 // add new block to blockchain
-/* func (blockchain *BlockChain) AddBlockToBlockchain(data string, height int64, prebBlockHash []byte) {
-	newBlock := NewBlock(data, height, prebBlockHash)
-	blockchain.Blocks = append(blockchain.Blocks, newBlock)
-} */
+func (blockchain *BlockChain) AddBlockToBlockchain(data string) {
+
+	// update database
+	err := blockchain.DB.Update(func(tx *bolt.Tx) error {
+		// 1.get table
+		bucket := tx.Bucket([]byte(blockTableName))
+
+		// 2.create new block
+		if bucket != nil {
+			// 3.get latest block
+			blockBytes := bucket.Get(blockchain.Tip)
+			// deserialize
+			block := DeserializateBlock(blockBytes)
+
+			// 4.store new block
+			newBlock := NewBlock(data, block.Height+1, block.Hash)
+			err := bucket.Put(newBlock.Hash, newBlock.SerializeBlock())
+			if err != nil {
+				log.Panic(err)
+			}
+
+			// 4.update "l"
+			err = bucket.Put([]byte("l"), newBlock.Hash)
+			if err != nil {
+				log.Panic(err)
+			}
+			// 5.update Tip
+			blockchain.Tip = newBlock.Hash
+		}
+
+		return nil
+	})
+	if err != nil {
+		log.Panic(err)
+	}
+}

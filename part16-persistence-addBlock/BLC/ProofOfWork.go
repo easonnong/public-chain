@@ -7,8 +7,8 @@ import (
 	"math/big"
 )
 
-// there must be at least 8 zeros before the 256-bit hash
-const targetBit = 8
+// there must be at least 12 zeros before the 256-bit hash
+const targetBit = 12
 
 type ProofOfWork struct {
 	// the current block to validate

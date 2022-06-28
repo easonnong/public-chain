@@ -33,7 +33,7 @@ func (block *Block) SerializeBlock() []byte {
 }
 
 // deserializate
-func (block *Block) DeserializateBlock(blockBytes []byte) *Block {
+func DeserializateBlock(blockBytes []byte) *Block {
 	var deBlock Block
 	decoder := gob.NewDecoder(bytes.NewReader(blockBytes))
 	if err := decoder.Decode(&deBlock); err != nil {
