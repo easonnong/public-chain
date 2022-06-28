@@ -20,21 +20,16 @@ func main() {
 	defer db.Close()
 
 	// create table
-	err = db.Update(func(tx *bolt.Tx) error {
+	err = db.View(func(tx *bolt.Tx) error {
 		// create BlockBucket table
-		bucket, err := tx.CreateBucket([]byte("BlockBucket"))
-		if err != nil {
-			return fmt.Errorf("create bucket failed, err=%s", err)
-		}
+		bucket := tx.Bucket([]byte("BlockBucket"))
+
 		// put data into table
 		if bucket != nil {
-			err := bucket.Put(
-				[]byte("l"),
-				[]byte("send 1 bitcoin to satoshi"),
-			)
-			if err != nil {
-				return fmt.Errorf("put failed, err=%s", err)
-			}
+			data := bucket.Get([]byte("l"))
+			fmt.Printf("l->\t%s\n", data)
+			data = bucket.Get([]byte("ll"))
+			fmt.Printf("ll->\t%s\n", data)
 		}
 		return nil
 	})
