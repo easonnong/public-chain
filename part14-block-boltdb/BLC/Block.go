@@ -1,6 +1,9 @@
 package BLC
 
 import (
+	"bytes"
+	"encoding/gob"
+	"log"
 	"time"
 )
 
@@ -45,4 +48,24 @@ func CreateGenesisBlock(data string) *Block {
 		1,
 		[]byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	)
+}
+
+// serialize
+func (block *Block) SerializeBlock() []byte {
+	var result bytes.Buffer
+	encoder := gob.NewEncoder(&result)
+	if err := encoder.Encode(block); err != nil {
+		log.Panic(err)
+	}
+	return result.Bytes()
+}
+
+// deserializate
+func (block *Block) DeserializateBlock(blockBytes []byte) *Block {
+	var deBlock Block
+	decoder := gob.NewDecoder(bytes.NewReader(blockBytes))
+	if err := decoder.Decode(&deBlock); err != nil {
+		log.Panic(err)
+	}
+	return &deBlock
 }

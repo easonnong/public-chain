@@ -3,7 +3,6 @@ package BLC
 import (
 	"bytes"
 	"crypto/sha256"
-	"fmt"
 	"math/big"
 )
 
@@ -45,7 +44,6 @@ func (pow *ProofOfWork) Run() ([]byte, int64) {
 		dataBytes := pow.prepareData(nonce)
 		// get hash
 		hash = sha256.Sum256(dataBytes)
-		fmt.Printf("\r%x", hash)
 		// storage hash into hashInt
 		hashInt.SetBytes(hash[:])
 		// judge hashInt and target
