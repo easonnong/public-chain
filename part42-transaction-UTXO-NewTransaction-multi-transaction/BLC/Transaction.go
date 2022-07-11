@@ -45,12 +45,12 @@ func NewCoinbaseTransaction(address string) *Transaction {
 }
 
 //2. transfer accounts transaction
-func NewSimpleTransaction(from, to string, amount int, blockchain *BlockChain) *Transaction {
+func NewSimpleTransaction(from, to string, amount int, blockchain *BlockChain, txs []*Transaction) *Transaction {
 
 	//unSpentTx := blockchain.unUTXOs(from)
 	//fmt.Println(unSpentTx)
 
-	money, spendableUTXODic := blockchain.FindSpendableUTXOs(from, amount)
+	money, spendableUTXODic := blockchain.FindSpendableUTXOs(from, amount, txs)
 
 	var txInputs []*TXInput
 	var txOutputs []*TXOutput
